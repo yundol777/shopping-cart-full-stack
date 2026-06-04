@@ -20,4 +20,17 @@ const router = createBrowserRouter(
 );
 
 const root = document.getElementById("root");
-createRoot(root!).render(<RouterProvider router={router} />);
+
+async function enableMocking() {
+  const { worker } = await import("./mocks/browser");
+
+  return worker.start({
+    serviceWorker: {
+      url: `mockServiceWorker.js`,
+    },
+  });
+}
+
+enableMocking().then(() => {
+  createRoot(root!).render(<RouterProvider router={router} />);
+});
