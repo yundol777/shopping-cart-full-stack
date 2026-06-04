@@ -19,7 +19,6 @@ const CartItem = ({
   onToggleItem,
 }: Props) => {
   const decreaseQuantity = () => {
-    if (item.quantity <= 1) return;
     void onUpdateQuantity(item.id, item.quantity - 1);
   };
 

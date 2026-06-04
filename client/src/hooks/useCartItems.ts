@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { CartItemsResponseDto } from "../apis/cart.api.dto";
 import type { CartItemModel, UseCartItemsReturn } from "./useCartItems.types";
 import { deleteCartItem, updateCartItemQuantity } from "../apis/cart.api";
+import { isValidCartItemQuantity } from "../domains/cart/quantity";
 import {
   getUnselectedItems,
   saveUnselectedItems,
@@ -28,6 +29,8 @@ const useCartItems = (
   const [items, setItems] = useState(() => createCartItems(cartItemsList));
 
   const updateQuantity = async (id: number, quantity: number) => {
+    if (!isValidCartItemQuantity(quantity)) return;
+
     await updateCartItemQuantity(id, quantity);
 
     setItems((prevItems) =>
