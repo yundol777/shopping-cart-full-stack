@@ -10,27 +10,20 @@ interface Props {
 }
 
 const Cart = ({ cartItemsList, shippingFeePolicy }: Props) => {
-  const { items, summary, actions } = useCartItems(
-    cartItemsList,
-    shippingFeePolicy,
-  );
+  const { items, isAllSelected, actions } = useCartItems(cartItemsList);
 
   return (
     <div>
       <p>현재 {items.length}종류의 상품이 담겨있습니다.</p>
       <CartItems
         items={items}
-        isAllSelected={summary.isAllSelected}
+        isAllSelected={isAllSelected}
         onUpdateQuantity={actions.updateQuantity}
         onDeleteItem={actions.deleteItem}
         onToggleItem={actions.toggleSelection}
         onToggleAll={actions.toggleAllSelection}
       />
-      <OrderSummary
-        totalPrice={summary.totalPrice}
-        shippingFee={summary.shippingFee}
-        freeShippingThreshold={shippingFeePolicy.getFreeShippingThreshold()}
-      />
+      <OrderSummary items={items} shippingFeePolicy={shippingFeePolicy} />
     </div>
   );
 };

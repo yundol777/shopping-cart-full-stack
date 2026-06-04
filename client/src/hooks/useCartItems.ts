@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { CartItemsResponseDto } from "../apis/cart.api.dto";
 import type { CartItemModel, UseCartItemsReturn } from "./useCartItems.types";
 import { deleteCartItem, updateCartItemQuantity } from "../apis/cart.api";
-import type { ShippingFeePolicyInterface } from "../domains/shipping/interface";
 import {
   getUnselectedItems,
   saveUnselectedItems,
@@ -25,7 +24,6 @@ const getUnselectedItemIds = (items: CartItemModel[]) => {
 
 const useCartItems = (
   cartItemsList: CartItemsResponseDto,
-  shippingFeePolicy: ShippingFeePolicyInterface,
 ): UseCartItemsReturn => {
   const [items, setItems] = useState(() => createCartItems(cartItemsList));
 
@@ -95,29 +93,10 @@ const useCartItems = (
   };
 
   const isAllSelected = items.every((item) => item.isSelected);
-  const selectedItems = items.filter((item) => item.isSelected);
-  const itemCount = selectedItems.length;
-  const totalQuantity = selectedItems.reduce(
-    (sum, item) => sum + item.quantity,
-    0,
-  );
-  const totalPrice = selectedItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0,
-  );
-  const shippingFee = shippingFeePolicy.calculate(totalPrice);
-
-  const summary = {
-    isAllSelected,
-    itemCount,
-    totalQuantity,
-    totalPrice,
-    shippingFee,
-  };
 
   return {
     items,
-    summary,
+    isAllSelected,
     actions,
   };
 };

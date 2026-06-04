@@ -1,17 +1,17 @@
+import type { ShippingFeePolicyInterface } from "../../domains/shipping/interface";
+import useOrderSummary from "../../hooks/useOrderSummary";
+import type { CartItemModel } from "../../hooks/useCartItems.types";
 import SummaryItem from "../SummaryItem/SummaryItem";
 
 interface Props {
-  totalPrice: number;
-  shippingFee: number;
-  freeShippingThreshold: number;
+  items: CartItemModel[];
+  shippingFeePolicy: ShippingFeePolicyInterface;
 }
 
-const OrderSummary = ({
-  totalPrice,
-  shippingFee,
-  freeShippingThreshold,
-}: Props) => {
-  const totalAmount = totalPrice + shippingFee;
+const OrderSummary = ({ items, shippingFeePolicy }: Props) => {
+  const { totalPrice, shippingFee, totalAmount, freeShippingThreshold } =
+    useOrderSummary(items, shippingFeePolicy);
+
   return (
     <div>
       <div>

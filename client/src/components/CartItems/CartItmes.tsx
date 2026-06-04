@@ -3,7 +3,6 @@ import CartItem from "../CartItem/CartItem";
 import type {
   CartActions,
   CartItemModel,
-  CartSummary,
 } from "../../hooks/useCartItems.types";
 
 interface Props {
@@ -12,7 +11,7 @@ interface Props {
   onDeleteItem: CartActions["deleteItem"];
   onToggleItem: CartActions["toggleSelection"];
   onToggleAll: CartActions["toggleAllSelection"];
-  isAllSelected: CartSummary["isAllSelected"];
+  isAllSelected: boolean;
 }
 
 const CartItems = ({
