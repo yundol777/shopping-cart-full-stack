@@ -1,5 +1,5 @@
 import checkIcon from "../../assets/check.svg";
-import { Container } from "./styles";
+import { Container } from "./SelectionCheckbox.styles";
 
 interface Props {
   isChecked: boolean;
