@@ -1,5 +1,13 @@
 import { useLocation } from "react-router";
 import Price from "../../commons/Price/Price";
+import {
+  Container,
+  Content,
+  Description,
+  PaymentAmount,
+  PaymentSummary,
+  Title,
+} from "./CheckoutPage.styles";
 
 interface CheckoutLocationState {
   itemCount: number;
@@ -13,21 +21,23 @@ const CheckoutPage = () => {
     state;
 
   return (
-    <div>
-      <div>
-        <h1>주문 확인</h1>
-        <div>
+    <Container>
+      <Content>
+        <Title>주문 확인</Title>
+        <Description>
           <p>
             총 {itemCount}종류의 상품 {totalQuantity}개 주문합니다.
           </p>
           <p>최종 결제 금액을 확인해 주세요.</p>
-        </div>
-        <div>
+        </Description>
+        <PaymentSummary>
           <p>총 결제 금액</p>
-          <Price value={totalAmount} />
-        </div>
-      </div>
-    </div>
+          <PaymentAmount>
+            <Price value={totalAmount} />
+          </PaymentAmount>
+        </PaymentSummary>
+      </Content>
+    </Container>
   );
 };
 

@@ -5,6 +5,7 @@ import {
   FREE_SHIPPING_THRESHOLD,
 } from "../../domains/shipping/constants";
 import CartContent from "./CartContent";
+import { Container, Title } from "./CartPage.styles";
 
 const shippingFeePolicy = new ShippingFeePolicy(
   FREE_SHIPPING_THRESHOLD,
@@ -15,15 +16,15 @@ const CartPage = () => {
   const { data, loading, error } = useCartQuery();
 
   return (
-    <>
-      <h1>장바구니</h1>
+    <Container>
+      <Title>장바구니</Title>
       <CartContent
         data={data}
         loading={loading}
         error={error}
         shippingFeePolicy={shippingFeePolicy}
       />
-    </>
+    </Container>
   );
 };
 

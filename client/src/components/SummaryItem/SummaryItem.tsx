@@ -1,4 +1,5 @@
 import Price from "../../commons/Price/Price";
+import { Container, Label, Value } from "./SummaryItem.styles";
 
 interface Props {
   label: string;
@@ -7,10 +8,12 @@ interface Props {
 
 const SummaryItem = ({ label, price }: Props) => {
   return (
-    <div>
-      <span>{label}</span>
-      <Price value={price} />
-    </div>
+    <Container>
+      <Label>{label}</Label>
+      <Value>
+        <Price value={price} />
+      </Value>
+    </Container>
   );
 };
 

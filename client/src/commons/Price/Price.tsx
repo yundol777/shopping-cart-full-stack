@@ -1,5 +1,7 @@
+import { Container } from "./Price.styles";
+
 const Price = ({ value }: { value: number }) => {
-  return <p>{value}원</p>;
+  return <Container>{value.toLocaleString()}원</Container>;
 };
 
 export default Price;

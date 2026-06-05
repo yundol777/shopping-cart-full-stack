@@ -3,6 +3,13 @@ import useOrderSummary from "../../hooks/useOrderSummary";
 import type { CartItemModel } from "../../hooks/useCartItems.types";
 import OrderSubmitButton from "../OrderSubmitButton/OrderSubmitButton";
 import SummaryItem from "../SummaryItem/SummaryItem";
+import {
+  Container,
+  FreeShippingNotice,
+  InfoIcon,
+  PriceGroup,
+  TotalSection,
+} from "./OrderSummary.styles";
 
 interface Props {
   items: CartItemModel[];
@@ -20,26 +27,27 @@ const OrderSummary = ({ items, shippingFeePolicy }: Props) => {
   } = useOrderSummary(items, shippingFeePolicy);
 
   return (
-    <div>
-      <div>
-        <img src="" alt="" />
+    <Container>
+      <FreeShippingNotice>
+        <InfoIcon>i</InfoIcon>
         <p>
-          총 주문 금액이 {freeShippingThreshold}원 이상일 경우 무료 배송됩니다.
+          총 주문 금액이 {freeShippingThreshold.toLocaleString()}원 이상일 경우
+          무료 배송됩니다.
         </p>
-      </div>
-      <div>
+      </FreeShippingNotice>
+      <PriceGroup>
         <SummaryItem label="주문 금액" price={totalPrice} />
         <SummaryItem label="배송비" price={shippingFee} />
-      </div>
-      <div>
+      </PriceGroup>
+      <TotalSection>
         <SummaryItem label="총 결제 금액" price={totalAmount} />
-      </div>
+      </TotalSection>
       <OrderSubmitButton
         itemCount={itemCount}
         totalQuantity={totalQuantity}
         totalAmount={totalAmount}
       />
-    </div>
+    </Container>
   );
 };
 

@@ -4,6 +4,18 @@ import type {
   CartActions,
   CartItemModel,
 } from "../../hooks/useCartItems.types";
+import {
+  Container,
+  ControlButton,
+  DeleteButton,
+  ItemBody,
+  ItemImage,
+  ItemInfo,
+  ItemName,
+  ItemPrice,
+  QuantityControls,
+  TopRow,
+} from "./CartItem.styles";
 
 interface Props {
   item: CartItemModel;
@@ -27,34 +39,38 @@ const CartItem = ({
   };
 
   return (
-    <div>
-      <div>
+    <Container>
+      <TopRow>
         <SelectionCheckbox
           id={`cart-item-${item.id}`}
           isChecked={item.isSelected}
           onClick={() => onToggleItem(item.id)}
         />
-        <button type="button" onClick={() => onDeleteItem(item.id)}>
+        <DeleteButton type="button" onClick={() => onDeleteItem(item.id)}>
           삭제
-        </button>{" "}
-      </div>
-      <div>
-        <img src={item.imageUrl} alt={item.name} />
-        <div>
+        </DeleteButton>
+      </TopRow>
+      <ItemBody>
+        <ItemImage src={item.imageUrl} alt={item.name} />
+        <ItemInfo>
           <div>
-            <p>{item.name}</p>
-            <Price value={item.price} />
+            <ItemName>{item.name}</ItemName>
+            <ItemPrice>
+              <Price value={item.price} />
+            </ItemPrice>
           </div>
-          <button type="button" onClick={handleDecreaseClick}>
-            -
-          </button>
-          <span>{item.quantity}</span>
-          <button type="button" onClick={handleIncreaseClick}>
-            +
-          </button>
-        </div>
-      </div>
-    </div>
+          <QuantityControls>
+            <ControlButton type="button" onClick={handleDecreaseClick}>
+              -
+            </ControlButton>
+            <span>{item.quantity}</span>
+            <ControlButton type="button" onClick={handleIncreaseClick}>
+              +
+            </ControlButton>
+          </QuantityControls>
+        </ItemInfo>
+      </ItemBody>
+    </Container>
   );
 };
 

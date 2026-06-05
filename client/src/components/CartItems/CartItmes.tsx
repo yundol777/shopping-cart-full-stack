@@ -4,6 +4,7 @@ import type {
   CartActions,
   CartItemModel,
 } from "../../hooks/useCartItems.types";
+import { Container, ItemList, SelectAll, Divider } from "./CartItems.styles";
 
 interface Props {
   items: CartItemModel[];
@@ -23,17 +24,17 @@ const CartItems = ({
   isAllSelected,
 }: Props) => {
   return (
-    <div>
-      <div>
+    <Container>
+      <SelectAll>
         <SelectionCheckbox
           id="select-all"
           isChecked={isAllSelected}
           onClick={onToggleAll}
         />
         <label htmlFor="select-all">전체선택</label>
-      </div>
-      <hr />
-      <div>
+      </SelectAll>
+      <Divider />
+      <ItemList>
         {items.map((item) => (
           <CartItem
             key={item.id}
@@ -43,8 +44,8 @@ const CartItems = ({
             onToggleItem={onToggleItem}
           />
         ))}
-      </div>
-    </div>
+      </ItemList>
+    </Container>
   );
 };
 

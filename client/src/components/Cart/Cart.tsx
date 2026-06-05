@@ -3,6 +3,7 @@ import useCartItems from "../../hooks/useCartItems";
 import type { ShippingFeePolicyInterface } from "../../domains/shipping/interface";
 import CartItems from "../CartItems/CartItmes";
 import OrderSummary from "../OrderSummary/OrderSummary";
+import { Container, Description } from "./Cart.styles";
 
 interface Props {
   cartItemsList: CartItemsResponseDto;
@@ -13,8 +14,8 @@ const Cart = ({ cartItemsList, shippingFeePolicy }: Props) => {
   const { items, isAllSelected, actions } = useCartItems(cartItemsList);
 
   return (
-    <div>
-      <p>현재 {items.length}종류의 상품이 담겨있습니다.</p>
+    <Container>
+      <Description>현재 {items.length}종류의 상품이 담겨있습니다.</Description>
       <CartItems
         items={items}
         isAllSelected={isAllSelected}
@@ -24,7 +25,7 @@ const Cart = ({ cartItemsList, shippingFeePolicy }: Props) => {
         onToggleAll={actions.toggleAllSelection}
       />
       <OrderSummary items={items} shippingFeePolicy={shippingFeePolicy} />
-    </div>
+    </Container>
   );
 };
 

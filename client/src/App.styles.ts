@@ -11,6 +11,6 @@ export const StyledMain = styled.main`
 `;
 
 export const ScrollArea = styled.div`
-  height: calc(100% - 56px - 52px);
+  height: calc(100% - 56px - 64px);
   overflow-y: auto;
 `;
