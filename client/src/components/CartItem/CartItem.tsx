@@ -18,12 +18,12 @@ const CartItem = ({
   onDeleteItem,
   onToggleItem,
 }: Props) => {
-  const decreaseQuantity = () => {
-    void onUpdateQuantity(item.id, item.quantity - 1);
+  const handleDecreaseClick = () => {
+    onUpdateQuantity(item.id, item.quantity - 1);
   };
 
-  const increaseQuantity = () => {
-    void onUpdateQuantity(item.id, item.quantity + 1);
+  const handleIncreaseClick = () => {
+    onUpdateQuantity(item.id, item.quantity + 1);
   };
 
   return (
@@ -34,7 +34,7 @@ const CartItem = ({
           isChecked={item.isSelected}
           onClick={() => onToggleItem(item.id)}
         />
-        <button type="button" onClick={() => void onDeleteItem(item.id)}>
+        <button type="button" onClick={() => onDeleteItem(item.id)}>
           삭제
         </button>{" "}
       </div>
@@ -45,11 +45,11 @@ const CartItem = ({
             <p>{item.name}</p>
             <Price value={item.price} />
           </div>
-          <button type="button" onClick={decreaseQuantity}>
+          <button type="button" onClick={handleDecreaseClick}>
             -
           </button>
           <span>{item.quantity}</span>
-          <button type="button" onClick={increaseQuantity}>
+          <button type="button" onClick={handleIncreaseClick}>
             +
           </button>
         </div>
