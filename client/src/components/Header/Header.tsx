@@ -1,11 +1,13 @@
 import { useLocation } from "react-router";
-import checkIcon from "../../assets/check.svg";
-import { Container, HomeButton, NavigationIcon } from "./Header.styles";
+import backArrow from "../../assets/back-arrow.png";
+import appLogo from "../../assets/app-logo.png";
+import { Container, HomeButton } from "./Header.styles";
+import Button from "../../commons/Button/Button";
 
 const getHeaderImage = (pathname: string) => {
-  if (pathname === "/checkout") return checkIcon;
+  if (pathname === "/checkout") return backArrow;
 
-  return "/favicon.svg";
+  return appLogo;
 };
 
 const Header = () => {
@@ -15,8 +17,9 @@ const Header = () => {
   return (
     <Container>
       <HomeButton to="/" isCheckout={isCheckout}>
-        <NavigationIcon src={getHeaderImage(pathname)} alt="" />
+        <img src={getHeaderImage(pathname)} alt="" />
       </HomeButton>
+      <Button label="결제하기" onClick={() => {}} disabled={true} />
     </Container>
   );
 };

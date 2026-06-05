@@ -1,7 +1,15 @@
 import type { CartItemsResponseDto, ErrorResponseDto } from "./cart.api.dto";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+function createApiUrl(path: string) {
+  if (API_BASE_URL === "") return path;
+
+  return `${API_BASE_URL}${path}`;
+}
+
 export async function getCartItems(): Promise<CartItemsResponseDto> {
-  const response = await fetch("/cart");
+  const response = await fetch(createApiUrl("/cart"));
   if (!response.ok) {
     const error: ErrorResponseDto = await response.json();
     throw new Error(error.message);
@@ -14,7 +22,7 @@ export async function updateCartItemQuantity(
   id: number,
   quantity: number,
 ): Promise<void> {
-  const response = await fetch(`/cart/${id}`, {
+  const response = await fetch(createApiUrl(`/cart/${id}`), {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -29,7 +37,7 @@ export async function updateCartItemQuantity(
 }
 
 export async function deleteCartItem(id: number): Promise<void> {
-  const response = await fetch(`/cart/${id}`, {
+  const response = await fetch(createApiUrl(`/cart/${id}`), {
     method: "DELETE",
   });
 

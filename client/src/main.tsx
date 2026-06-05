@@ -31,6 +31,12 @@ async function enableMocking() {
   });
 }
 
-enableMocking().then(() => {
+async function prepareApp() {
+  if (import.meta.env.VITE_USE_MSW !== "true") return;
+
+  await enableMocking();
+}
+
+prepareApp().then(() => {
   createRoot(root!).render(<RouterProvider router={router} />);
 });
