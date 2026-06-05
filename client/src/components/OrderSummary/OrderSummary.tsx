@@ -1,6 +1,7 @@
 import type { ShippingFeePolicyInterface } from "../../domains/shipping/interface";
 import useOrderSummary from "../../hooks/useOrderSummary";
 import type { CartItemModel } from "../../hooks/useCartItems.types";
+import OrderSubmitButton from "../OrderSubmitButton/OrderSubmitButton";
 import SummaryItem from "../SummaryItem/SummaryItem";
 
 interface Props {
@@ -9,8 +10,14 @@ interface Props {
 }
 
 const OrderSummary = ({ items, shippingFeePolicy }: Props) => {
-  const { totalPrice, shippingFee, totalAmount, freeShippingThreshold } =
-    useOrderSummary(items, shippingFeePolicy);
+  const {
+    itemCount,
+    totalQuantity,
+    totalPrice,
+    shippingFee,
+    totalAmount,
+    freeShippingThreshold,
+  } = useOrderSummary(items, shippingFeePolicy);
 
   return (
     <div>
@@ -27,6 +34,11 @@ const OrderSummary = ({ items, shippingFeePolicy }: Props) => {
       <div>
         <SummaryItem label="총 결제 금액" price={totalAmount} />
       </div>
+      <OrderSubmitButton
+        itemCount={itemCount}
+        totalQuantity={totalQuantity}
+        totalAmount={totalAmount}
+      />
     </div>
   );
 };
