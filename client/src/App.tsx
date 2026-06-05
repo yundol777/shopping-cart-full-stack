@@ -1,10 +1,14 @@
 import { Outlet } from "react-router";
-import { StyledMain } from "./App.styles";
+import { ScrollArea, StyledMain } from "./App.styles";
+import Header from "./components/Header/Header";
 
 function App() {
   return (
     <StyledMain>
-      <Outlet />
+      <Header />
+      <ScrollArea>
+        <Outlet />
+      </ScrollArea>
     </StyledMain>
   );
 }
