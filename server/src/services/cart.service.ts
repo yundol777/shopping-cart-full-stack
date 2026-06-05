@@ -1,4 +1,5 @@
 import { CART_ERROR_RESPONSE, PRODUCT_ERROR_RESPONSE } from "../constants/error.js";
+import { CartItem, CartItemResponse } from "../interfaces/cart.interface.js";
 import {
   findAll,
   isAlreadyExist,
@@ -7,10 +8,22 @@ import {
   updateItemQuantity,
   deleteByProductId,
 } from "../repositories/cart.repository.js";
-import { getProductStockById } from "./products.service.js";
+import { getProductById, getProductStockById } from "./products.service.js";
 
 export async function getCartItems() {
-  return await findAll();
+  const cartItems = await findAll();
+  return await Promise.all(cartItems.map(createCartItemResponse));
+}
+
+async function createCartItemResponse(cartItem: CartItem): Promise<CartItemResponse> {
+  const product = await getProductById(cartItem.productId);
+  return {
+    ...cartItem,
+    name: product.name,
+    stock: product.stock,
+    imageUrl: product.imageUrl,
+    price: product.price,
+  };
 }
 
 export async function updateCartItemQuantity(id: number, quantity: number) {

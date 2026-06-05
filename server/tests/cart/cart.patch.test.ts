@@ -60,10 +60,8 @@ describe("PATCH /cart/:id", () => {
 
   it("장바구니 상품이 삭제된 상품이면 404 Not Found를 반환한다.", async () => {
     saveNewItem({ productId: 1, quantity: 1 });
-    const { body: cartItems } = await request(app).get("/cart").expect(200);
-    const id = cartItems[0].id;
 
-    const response = await request(app).patch(`/cart/${id}`).send({ quantity: 2 });
+    const response = await request(app).patch("/cart/1").send({ quantity: 2 });
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
       code: "PRODUCT_NOT_FOUND",
@@ -77,10 +75,8 @@ describe("PATCH /cart/:id", () => {
     ["quantity가 1보다 작으면", { quantity: 0 }, "INVALID_CART_ITEM_QUANTITY"],
   ])("%s 400 Bad Request를 반환한다.", async (_caseName, body, code) => {
     saveNewItem({ productId: 1, quantity: 1 });
-    const { body: cartItems } = await request(app).get("/cart").expect(200);
-    const id = cartItems[0].id;
 
-    const response = await request(app).patch(`/cart/${id}`).send(body);
+    const response = await request(app).patch("/cart/1").send(body);
 
     expect(response.status).toBe(400);
     expect(response.body).toEqual({

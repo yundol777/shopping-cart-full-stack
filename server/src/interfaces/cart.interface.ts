@@ -1,5 +1,6 @@
 import * as z from "zod";
 import { updateCartItemRequestSchema } from "../schemas/cart.schema.js";
+import { Product } from "./product.interface.js";
 
 export type UpdateCartItemDto = z.infer<typeof updateCartItemRequestSchema>;
 
@@ -9,3 +10,5 @@ export interface CartItem {
   productId: number;
   quantity: number;
 }
+
+export type CartItemResponse = CartItem & Pick<Product, "name" | "stock" | "imageUrl" | "price">;
