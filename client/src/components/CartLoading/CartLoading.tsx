@@ -1,5 +1,11 @@
+import { Container, Spinner } from "./CartLoading.styles";
+
 const CartLoading = () => {
-  return <div>loading</div>;
+  return (
+    <Container>
+      <Spinner />
+    </Container>
+  );
 };
 
 export default CartLoading;
