@@ -9,7 +9,7 @@ app.use(express.json());
 
 const corsOptions = {
   // 추후 프론트 배포 주소 추가
-  origin: ["http://localhost:5173", "https://shopping-cart-full-stack-git-step2-yundolls-projects.vercel.app/"],
+  origin: ["http://localhost:5173", "https://shopping-cart-full-stack-gamma.vercel.app"],
   methods: ["GET", "POST", "PATCH", "DELETE"],
 };
 
