@@ -1,96 +1,62 @@
 import { useState } from "react";
 import type { CartItemsResponseDto } from "../apis/cart.api.dto";
 import type { CartItemModel, UseCartItemsReturn } from "./useCartItems.types";
-import { deleteCartItem, updateCartItemQuantity } from "../apis/cart.api";
-import { isValidCartItemQuantity } from "../domains/cart/quantity";
 import {
   getUnselectedItems,
   saveUnselectedItems,
 } from "../storage/cart.storage";
+import type { UseCartDataReturn } from "./useCartData.types";
 
-const createCartItems = (
-  cartItemsList: CartItemsResponseDto,
-): CartItemModel[] => {
-  const unselectedItemIds = getUnselectedItems();
+interface Props {
+  cartItemsList: CartItemsResponseDto;
+  deleteItem: UseCartDataReturn["deleteItem"];
+}
 
-  return cartItemsList.map((cartItem) => ({
+const useCartItems = ({
+  cartItemsList,
+  deleteItem,
+}: Props): UseCartItemsReturn => {
+  const [unselectedItemIds, setUnselectedItemIds] =
+    useState(getUnselectedItems);
+
+  const items: CartItemModel[] = cartItemsList.map((cartItem) => ({
     ...cartItem,
     isSelected: !unselectedItemIds.includes(cartItem.id),
   }));
-};
 
-const getUnselectedItemIds = (items: CartItemModel[]) => {
-  return items.filter((item) => !item.isSelected).map((item) => item.id);
-};
+  const handleDeleteItem = async (id: number) => {
+    await deleteItem(id);
 
-const useCartItems = (
-  cartItemsList: CartItemsResponseDto,
-): UseCartItemsReturn => {
-  const [items, setItems] = useState(() => createCartItems(cartItemsList));
-
-  const updateQuantity = async (id: number, quantity: number) => {
-    if (!isValidCartItemQuantity(quantity)) return;
-
-    await updateCartItemQuantity(id, quantity);
-
-    setItems((prevItems) =>
-      prevItems.map((item) => {
-        if (item.id !== id) return item;
-
-        return {
-          ...item,
-          quantity,
-        };
-      }),
-    );
-  };
-
-  const deleteItem = async (id: number) => {
-    await deleteCartItem(id);
-
-    setItems((prevItems) => {
-      const nextItems = prevItems.filter((item) => item.id !== id);
-      saveUnselectedItems(getUnselectedItemIds(nextItems));
-
-      return nextItems;
+    setUnselectedItemIds((prevIds) => {
+      const nextIds = prevIds.filter((itemId) => itemId !== id);
+      saveUnselectedItems(nextIds);
+      return nextIds;
     });
   };
 
   const toggleSelection = (id: number) => {
-    setItems((prevItems) => {
-      const nextItems = prevItems.map((item) => {
-        if (item.id !== id) return item;
+    setUnselectedItemIds((prevIds) => {
+      const nextIds = prevIds.includes(id)
+        ? prevIds.filter((itemId) => itemId !== id)
+        : [...prevIds, id];
 
-        return {
-          ...item,
-          isSelected: !item.isSelected,
-        };
-      });
-
-      saveUnselectedItems(getUnselectedItemIds(nextItems));
-
-      return nextItems;
+      saveUnselectedItems(nextIds);
+      return nextIds;
     });
   };
 
   const toggleAllSelection = () => {
-    setItems((prevItems) => {
-      const hasUnselectedItem = prevItems.some((item) => !item.isSelected);
+    setUnselectedItemIds(() => {
+      const hasUnselectedItem = items.some((item) => !item.isSelected);
+      const nextIds = hasUnselectedItem ? [] : items.map((item) => item.id);
 
-      const nextItems = prevItems.map((item) => ({
-        ...item,
-        isSelected: hasUnselectedItem,
-      }));
-
-      saveUnselectedItems(getUnselectedItemIds(nextItems));
-
-      return nextItems;
+      saveUnselectedItems(nextIds);
+      return nextIds;
     });
   };
 
   const actions = {
-    updateQuantity,
-    deleteItem,
+    handleDeleteItem,
     toggleSelection,
     toggleAllSelection,
   };

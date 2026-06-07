@@ -5,8 +5,7 @@ export interface CartItemModel extends CartItem {
 }
 
 export interface CartActions {
-  updateQuantity: (id: number, quantity: number) => Promise<void>;
-  deleteItem: (id: number) => Promise<void>;
+  handleDeleteItem: (id: number) => Promise<void>;
   toggleSelection: (id: number) => void;
   toggleAllSelection: () => void;
 }

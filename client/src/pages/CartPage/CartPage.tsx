@@ -1,4 +1,3 @@
-import useCartQuery from "../../hooks/useCartQuery";
 import ShippingFeePolicy from "../../domains/shipping/model";
 import {
   DEFAULT_SHIPPING_FEE,
@@ -9,6 +8,7 @@ import CartEmpty from "../../components/CartEmpty/CartEmpty";
 import CartError from "../../components/CartError/CartError";
 import CartLoading from "../../components/CartLoading/CartLoading";
 import { Container, Title } from "./CartPage.styles";
+import useCartData from "../../hooks/useCartData";
 
 const shippingFeePolicy = new ShippingFeePolicy(
   FREE_SHIPPING_THRESHOLD,
@@ -16,10 +16,15 @@ const shippingFeePolicy = new ShippingFeePolicy(
 );
 
 const CartPage = () => {
-  const { data, loading, error } = useCartQuery();
+  const { data, loading, error, updateQuantity, deleteItem } = useCartData();
 
   let content = (
-    <Cart cartItemsList={data} shippingFeePolicy={shippingFeePolicy} />
+    <Cart
+      cartItemsList={data}
+      shippingFeePolicy={shippingFeePolicy}
+      updateQuantity={updateQuantity}
+      deleteItem={deleteItem}
+    />
   );
 
   if (loading) content = <CartLoading />;

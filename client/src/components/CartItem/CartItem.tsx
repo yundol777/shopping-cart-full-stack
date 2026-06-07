@@ -4,6 +4,7 @@ import type {
   CartActions,
   CartItemModel,
 } from "../../hooks/useCartItems.types";
+import type { UseCartDataReturn } from "../../hooks/useCartData.types";
 import {
   Container,
   ControlButton,
@@ -19,8 +20,8 @@ import {
 
 interface Props {
   item: CartItemModel;
-  onUpdateQuantity: CartActions["updateQuantity"];
-  onDeleteItem: CartActions["deleteItem"];
+  onUpdateQuantity: UseCartDataReturn["updateQuantity"];
+  onDeleteItem: CartActions["handleDeleteItem"];
   onToggleItem: CartActions["toggleSelection"];
 }
 

@@ -1,17 +1,27 @@
-import type { CartItemsResponseDto } from "../../apis/cart.api.dto";
 import useCartItems from "../../hooks/useCartItems";
 import type { ShippingFeePolicyInterface } from "../../domains/shipping/interface";
 import CartItems from "../CartItems/CartItmes";
 import OrderSummary from "../OrderSummary/OrderSummary";
 import { Container, Description } from "./Cart.styles";
+import type { UseCartDataReturn } from "../../hooks/useCartData.types";
 
 interface Props {
-  cartItemsList: CartItemsResponseDto;
+  cartItemsList: UseCartDataReturn["data"];
   shippingFeePolicy: ShippingFeePolicyInterface;
+  updateQuantity: UseCartDataReturn["updateQuantity"];
+  deleteItem: UseCartDataReturn["deleteItem"];
 }
 
-const Cart = ({ cartItemsList, shippingFeePolicy }: Props) => {
-  const { items, isAllSelected, actions } = useCartItems(cartItemsList);
+const Cart = ({
+  cartItemsList,
+  shippingFeePolicy,
+  updateQuantity,
+  deleteItem,
+}: Props) => {
+  const { items, isAllSelected, actions } = useCartItems({
+    cartItemsList,
+    deleteItem,
+  });
 
   return (
     <Container>
@@ -19,8 +29,8 @@ const Cart = ({ cartItemsList, shippingFeePolicy }: Props) => {
       <CartItems
         items={items}
         isAllSelected={isAllSelected}
-        onUpdateQuantity={actions.updateQuantity}
-        onDeleteItem={actions.deleteItem}
+        onUpdateQuantity={updateQuantity}
+        onDeleteItem={actions.handleDeleteItem}
         onToggleItem={actions.toggleSelection}
         onToggleAll={actions.toggleAllSelection}
       />

@@ -5,11 +5,12 @@ import type {
   CartItemModel,
 } from "../../hooks/useCartItems.types";
 import { Container, ItemList, SelectAll, Divider } from "./CartItems.styles";
+import type { UseCartDataReturn } from "../../hooks/useCartData.types";
 
 interface Props {
   items: CartItemModel[];
-  onUpdateQuantity: CartActions["updateQuantity"];
-  onDeleteItem: CartActions["deleteItem"];
+  onUpdateQuantity: UseCartDataReturn["updateQuantity"];
+  onDeleteItem: CartActions["handleDeleteItem"];
   onToggleItem: CartActions["toggleSelection"];
   onToggleAll: CartActions["toggleAllSelection"];
   isAllSelected: boolean;
