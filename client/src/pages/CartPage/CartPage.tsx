@@ -9,6 +9,7 @@ import CartError from "../../components/CartError/CartError";
 import CartLoading from "../../components/CartLoading/CartLoading";
 import { Container, Title } from "./CartPage.styles";
 import useCartData from "../../hooks/useCartData";
+import CartUpdatingOverlay from "../../components/CartUpdatingOverlay/CartUpdatingOverlay";
 
 const shippingFeePolicy = new ShippingFeePolicy(
   FREE_SHIPPING_THRESHOLD,
@@ -16,7 +17,8 @@ const shippingFeePolicy = new ShippingFeePolicy(
 );
 
 const CartPage = () => {
-  const { data, loading, error, updateQuantity, deleteItem } = useCartData();
+  const { data, loading, error, updatingQuantity, updateQuantity, deleteItem } =
+    useCartData();
 
   let content = (
     <Cart
@@ -35,6 +37,7 @@ const CartPage = () => {
     <Container>
       <Title>장바구니</Title>
       {content}
+      {updatingQuantity && <CartUpdatingOverlay />}
     </Container>
   );
 };

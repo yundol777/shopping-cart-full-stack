@@ -1,4 +1,5 @@
-import { Container, Spinner } from "./CartLoading.styles";
+import Spinner from "../../commons/Spinner/Spinner";
+import { Container } from "./CartLoading.styles";
 
 const CartLoading = () => {
   return (

@@ -25,7 +25,11 @@ const useCartItems = ({
   }));
 
   const handleDeleteItem = async (id: number) => {
-    await deleteItem(id);
+    try {
+      await deleteItem(id);
+    } catch {
+      return;
+    }
 
     setUnselectedItemIds((prevIds) => {
       const nextIds = prevIds.filter((itemId) => itemId !== id);
