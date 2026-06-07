@@ -4,7 +4,10 @@ import {
   DEFAULT_SHIPPING_FEE,
   FREE_SHIPPING_THRESHOLD,
 } from "../../domains/shipping/constants";
-import CartContent from "./CartContent";
+import Cart from "../../components/Cart/Cart";
+import CartEmpty from "../../components/CartEmpty/CartEmpty";
+import CartError from "../../components/CartError/CartError";
+import CartLoading from "../../components/CartLoading/CartLoading";
 import { Container, Title } from "./CartPage.styles";
 
 const shippingFeePolicy = new ShippingFeePolicy(
@@ -15,15 +18,18 @@ const shippingFeePolicy = new ShippingFeePolicy(
 const CartPage = () => {
   const { data, loading, error } = useCartQuery();
 
+  let content = (
+    <Cart cartItemsList={data} shippingFeePolicy={shippingFeePolicy} />
+  );
+
+  if (loading) content = <CartLoading />;
+  else if (error) content = <CartError error={error.message} />;
+  else if (data.length === 0) content = <CartEmpty />;
+
   return (
     <Container>
       <Title>장바구니</Title>
-      <CartContent
-        data={data}
-        loading={loading}
-        error={error}
-        shippingFeePolicy={shippingFeePolicy}
-      />
+      {content}
     </Container>
   );
 };
