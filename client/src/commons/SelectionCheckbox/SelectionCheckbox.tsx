@@ -1,22 +1,14 @@
+import type { ComponentPropsWithoutRef } from "react";
 import checkIcon from "../../assets/check.svg";
 import { Container } from "./SelectionCheckbox.styles";
 
-interface Props {
-  id: string;
+interface Props extends ComponentPropsWithoutRef<"button"> {
   isChecked: boolean;
-  ariaLabel: string;
-  onClick: () => void;
 }
 
-const SelectionCheckbox = ({ id, isChecked, ariaLabel, onClick }: Props) => {
+const SelectionCheckbox = ({ isChecked, ...buttonProps }: Props) => {
   return (
-    <Container
-      id={id}
-      type="button"
-      aria-label={ariaLabel}
-      onClick={onClick}
-      isChecked={isChecked}
-    >
+    <Container type="button" isChecked={isChecked} {...buttonProps}>
       <img src={checkIcon} alt="" />
     </Container>
   );

@@ -30,7 +30,7 @@ const CartItems = ({
         <SelectionCheckbox
           id="select-all"
           isChecked={isAllSelected}
-          ariaLabel="전체 선택"
+          aria-label="전체 선택"
           onClick={onToggleAll}
         />
         <label htmlFor="select-all">전체선택</label>
