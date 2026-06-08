@@ -7,6 +7,7 @@ const meta = {
   component: SelectionCheckbox,
   args: {
     id: "selection-checkbox",
+    ariaLabel: "선택",
     onClick: () => {},
   },
 } satisfies Meta<typeof SelectionCheckbox>;

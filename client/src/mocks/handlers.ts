@@ -2,12 +2,12 @@ import { http, HttpResponse } from "msw";
 import { cartItems } from "./mockDatabase";
 
 export const handlers = [
-  http.get("/cart", () => {
+  http.get(/\/cart$/, () => {
     return HttpResponse.json(cartItems);
   }),
 
-  http.patch("/cart/:id", async ({ params, request }) => {
-    const id = Number(params.id);
+  http.patch(/\/cart\/\d+$/, async ({ request }) => {
+    const id = Number(new URL(request.url).pathname.split("/").at(-1));
     const cartItem = cartItems.find((item) => item.id === id);
     const { quantity } = (await request.json()) as { quantity?: number };
 
@@ -36,8 +36,8 @@ export const handlers = [
     return new HttpResponse(null, { status: 204 });
   }),
 
-  http.delete("/cart/:id", ({ params }) => {
-    const id = Number(params.id);
+  http.delete(/\/cart\/\d+$/, ({ request }) => {
+    const id = Number(new URL(request.url).pathname.split("/").at(-1));
     const index = cartItems.findIndex((item) => item.id === id);
 
     if (index !== -1) {

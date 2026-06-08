@@ -45,6 +45,7 @@ const CartItem = ({
         <SelectionCheckbox
           id={`cart-item-${item.id}`}
           isChecked={item.isSelected}
+          ariaLabel={`${item.name} 선택`}
           onClick={() => onToggleItem(item.id)}
         />
         <DeleteButton type="button" onClick={() => onDeleteItem(item.id)}>

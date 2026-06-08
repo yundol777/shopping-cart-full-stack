@@ -3,7 +3,7 @@ import { Container } from "./CartLoading.styles";
 
 const CartLoading = () => {
   return (
-    <Container>
+    <Container role="status" aria-label="장바구니 조회 중">
       <Spinner />
     </Container>
   );
