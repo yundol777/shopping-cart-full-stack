@@ -11,9 +11,27 @@ export const handlers = [
     const cartItem = cartItems.find((item) => item.id === id);
     const { quantity } = (await request.json()) as { quantity?: number };
 
-    if (cartItem && quantity) {
-      cartItem.quantity = quantity;
+    if (!cartItem) {
+      return HttpResponse.json(
+        {
+          code: "CART_ITEM_NOT_FOUND",
+          message: "장바구니 상품을 찾을 수 없습니다.",
+        },
+        { status: 404 },
+      );
     }
+
+    if (quantity && quantity > cartItem.stock) {
+      return HttpResponse.json(
+        {
+          code: "OUT_OF_STOCK",
+          message: "요청한 수량이 현재 재고보다 많습니다.",
+        },
+        { status: 409 },
+      );
+    }
+
+    if (quantity) cartItem.quantity = quantity;
 
     return new HttpResponse(null, { status: 204 });
   }),

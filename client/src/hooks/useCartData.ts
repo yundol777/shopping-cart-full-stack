@@ -13,7 +13,8 @@ const useCartData = (): UseCartDataReturn => {
   const [data, setData] = useState<CartItemsResponseDto>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [updatingQuantity, setUpdatingQuantity] = useState(false);
+  const [mutationError, setMutationError] = useState<Error | null>(null);
+  const [mutationLoading, setMutationLoading] = useState(false);
 
   const replaceQuantity = (id: number, quantity: number) => {
     setData((prevItems) =>
@@ -42,7 +43,7 @@ const useCartData = (): UseCartDataReturn => {
         const cartItems = await getCartItems();
         setData(cartItems);
       } catch (error) {
-        setError(error instanceof Error ? error : new Error("네트워크 에러"));
+        if (error instanceof Error) setError(error);
       } finally {
         setLoading(false);
       }
@@ -51,33 +52,54 @@ const useCartData = (): UseCartDataReturn => {
     fetchCartItems();
   }, []);
 
+  useEffect(() => {
+    if (mutationError === null) return;
+
+    const timerId = setTimeout(() => {
+      setMutationError(null);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [mutationError]);
+
   const updateQuantity = async (id: number, quantity: number) => {
     if (!isValidCartItemQuantity(quantity)) return;
     try {
-      setUpdatingQuantity(true);
+      setMutationError(null);
+      setMutationLoading(true);
       await updateCartItemQuantity(id, quantity);
       replaceQuantity(id, quantity);
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error);
-      }
+      if (error instanceof Error) setMutationError(error);
     } finally {
-      setUpdatingQuantity(false);
+      setMutationLoading(false);
     }
   };
 
   const deleteItem = async (id: number) => {
     const prevCartItems = data;
     try {
+      setMutationError(null);
       removeItem(id);
       await deleteCartItem(id);
     } catch (error) {
       setData(prevCartItems);
+      if (error instanceof Error) setMutationError(error);
       throw error;
     }
   };
 
-  return { data, loading, error, updatingQuantity, updateQuantity, deleteItem };
+  return {
+    data,
+    loading,
+    error,
+    mutationError,
+    mutationLoading,
+    updateQuantity,
+    deleteItem,
+  };
 };
 
 export default useCartData;

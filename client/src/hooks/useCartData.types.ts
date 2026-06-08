@@ -4,7 +4,8 @@ export interface UseCartDataReturn {
   data: CartItemsResponseDto;
   loading: boolean;
   error: Error | null;
-  updatingQuantity: boolean;
+  mutationError: Error | null;
+  mutationLoading: boolean;
   updateQuantity: (id: number, quantity: number) => Promise<void>;
   deleteItem: (id: number) => Promise<void>;
 }

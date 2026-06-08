@@ -9,7 +9,14 @@ function createApiUrl(path: string) {
 }
 
 export async function getCartItems(): Promise<CartItemsResponseDto> {
-  const response = await fetch(createApiUrl("/cart"));
+  let response: Response;
+
+  try {
+    response = await fetch(createApiUrl("/cart"));
+  } catch {
+    throw new Error("네트워크 에러가 발생했습니다.");
+  }
+
   if (!response.ok) {
     const error: ErrorResponseDto = await response.json();
     throw new Error(error.message);
@@ -22,13 +29,19 @@ export async function updateCartItemQuantity(
   id: number,
   quantity: number,
 ): Promise<void> {
-  const response = await fetch(createApiUrl(`/cart/${id}`), {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ quantity }),
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(createApiUrl(`/cart/${id}`), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ quantity }),
+    });
+  } catch {
+    throw new Error("네트워크 에러가 발생했습니다.");
+  }
 
   if (!response.ok) {
     const error: ErrorResponseDto = await response.json();
@@ -37,9 +50,15 @@ export async function updateCartItemQuantity(
 }
 
 export async function deleteCartItem(id: number): Promise<void> {
-  const response = await fetch(createApiUrl(`/cart/${id}`), {
-    method: "DELETE",
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(createApiUrl(`/cart/${id}`), {
+      method: "DELETE",
+    });
+  } catch {
+    throw new Error("네트워크 에러가 발생했습니다.");
+  }
 
   if (!response.ok) {
     const error: ErrorResponseDto = await response.json();
