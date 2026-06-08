@@ -1,9 +1,15 @@
+import { Container, Message } from "./CartError.styles";
+
 interface Props {
   error: string;
 }
 
 const CartError = ({ error }: Props) => {
-  return <div>{error}</div>;
+  return (
+    <Container>
+      <Message>{error}</Message>
+    </Container>
+  );
 };
 
 export default CartError;
