@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   deleteCartItem,
   getCartItems,
+  NetworkError,
   updateCartItemQuantity,
 } from "../apis/cart.api";
 import type { CartItemsResponseDto } from "../apis/cart.api.dto";
@@ -27,6 +28,11 @@ const useCartData = (): UseCartDataReturn => {
         };
       }),
     );
+  };
+
+  const refetchCartItems = async () => {
+    const cartItems = await getCartItems();
+    setData(cartItems);
   };
 
   const removeItem = (id: number) => {
@@ -73,6 +79,7 @@ const useCartData = (): UseCartDataReturn => {
       replaceQuantity(id, quantity);
     } catch (error) {
       if (error instanceof Error) setMutationError(error);
+      if (error instanceof NetworkError) await refetchCartItems();
     } finally {
       setMutationLoading(false);
     }
@@ -87,6 +94,7 @@ const useCartData = (): UseCartDataReturn => {
     } catch (error) {
       setData(prevCartItems);
       if (error instanceof Error) setMutationError(error);
+      if (error instanceof NetworkError) await refetchCartItems();
       throw error;
     }
   };
