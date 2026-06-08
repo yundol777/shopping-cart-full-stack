@@ -1,8 +1,3 @@
-import ShippingFeePolicy from "../../domains/shipping/model";
-import {
-  DEFAULT_SHIPPING_FEE,
-  FREE_SHIPPING_THRESHOLD,
-} from "../../domains/shipping/constants";
 import Cart from "../../components/Cart/Cart";
 import CartEmpty from "../../components/CartEmpty/CartEmpty";
 import CartError from "../../components/CartError/CartError";
@@ -11,11 +6,6 @@ import { Container, Title } from "./CartPage.styles";
 import useCartData from "../../hooks/useCartData";
 import CartUpdatingOverlay from "../../components/CartUpdatingOverlay/CartUpdatingOverlay";
 import Toast from "../../commons/Toast/Toast";
-
-const shippingFeePolicy = new ShippingFeePolicy(
-  FREE_SHIPPING_THRESHOLD,
-  DEFAULT_SHIPPING_FEE,
-);
 
 const CartPage = () => {
   const {
@@ -31,7 +21,6 @@ const CartPage = () => {
   let content = (
     <Cart
       cartItemsList={data}
-      shippingFeePolicy={shippingFeePolicy}
       updateQuantity={updateQuantity}
       deleteItem={deleteItem}
     />

@@ -1,11 +1,11 @@
-import type { ShippingFeePolicyInterface } from "../domains/shipping/interface";
+import {
+  calculateShippingFee,
+  getFreeShippingThreshold,
+} from "../domains/shipping/shipping";
 import type { CartItemModel } from "./useCartItems.types";
 import type { OrderSummarys } from "./useOrderSummary.types";
 
-const useOrderSummary = (
-  items: CartItemModel[],
-  shippingFeePolicy: ShippingFeePolicyInterface,
-): OrderSummarys => {
+const useOrderSummary = (items: CartItemModel[]): OrderSummarys => {
   const selectedItems = items.filter((item) => item.isSelected);
   const itemCount = selectedItems.length;
   const totalQuantity = selectedItems.reduce(
@@ -16,9 +16,9 @@ const useOrderSummary = (
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
-  const shippingFee = shippingFeePolicy.calculate(totalPrice);
+  const shippingFee = calculateShippingFee(totalPrice);
   const totalAmount = totalPrice + shippingFee;
-  const freeShippingThreshold = shippingFeePolicy.getFreeShippingThreshold();
+  const freeShippingThreshold = getFreeShippingThreshold();
 
   return {
     itemCount,

@@ -1,4 +1,3 @@
-import type { ShippingFeePolicyInterface } from "../../domains/shipping/interface";
 import useOrderSummary from "../../hooks/useOrderSummary";
 import type { CartItemModel } from "../../hooks/useCartItems.types";
 import OrderSubmitButton from "../OrderSubmitButton/OrderSubmitButton";
@@ -13,10 +12,9 @@ import {
 
 interface Props {
   items: CartItemModel[];
-  shippingFeePolicy: ShippingFeePolicyInterface;
 }
 
-const OrderSummary = ({ items, shippingFeePolicy }: Props) => {
+const OrderSummary = ({ items }: Props) => {
   const {
     itemCount,
     totalQuantity,
@@ -24,7 +22,7 @@ const OrderSummary = ({ items, shippingFeePolicy }: Props) => {
     shippingFee,
     totalAmount,
     freeShippingThreshold,
-  } = useOrderSummary(items, shippingFeePolicy);
+  } = useOrderSummary(items);
 
   return (
     <Container>

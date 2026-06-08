@@ -1,5 +1,4 @@
 import useCartItems from "../../hooks/useCartItems";
-import type { ShippingFeePolicyInterface } from "../../domains/shipping/interface";
 import CartItems from "../CartItems/CartItmes";
 import OrderSummary from "../OrderSummary/OrderSummary";
 import { Container, Description } from "./Cart.styles";
@@ -7,17 +6,11 @@ import type { UseCartDataReturn } from "../../hooks/useCartData.types";
 
 interface Props {
   cartItemsList: UseCartDataReturn["data"];
-  shippingFeePolicy: ShippingFeePolicyInterface;
   updateQuantity: UseCartDataReturn["updateQuantity"];
   deleteItem: UseCartDataReturn["deleteItem"];
 }
 
-const Cart = ({
-  cartItemsList,
-  shippingFeePolicy,
-  updateQuantity,
-  deleteItem,
-}: Props) => {
+const Cart = ({ cartItemsList, updateQuantity, deleteItem }: Props) => {
   const { items, isAllSelected, actions } = useCartItems({
     cartItemsList,
     deleteItem,
@@ -34,7 +27,7 @@ const Cart = ({
         onToggleItem={actions.toggleSelection}
         onToggleAll={actions.toggleAllSelection}
       />
-      <OrderSummary items={items} shippingFeePolicy={shippingFeePolicy} />
+      <OrderSummary items={items} />
     </Container>
   );
 };
