@@ -9,11 +9,9 @@ describe("DELETE /cart/:id", () => {
 
   it("존재하는 장바구니 상품을 삭제하면 204 No Content와 빈 응답을 반환한다.", async () => {
     saveNewItem({ productId: 1, quantity: 2 });
-    const { body: cartItems } = await request(app).get("/cart").expect(200);
-    const id = cartItems[0].id;
 
     // 삭제 요청 검증
-    const response = await request(app).delete(`/cart/${id}`);
+    const response = await request(app).delete("/cart/1");
     expect(response.status).toBe(204);
     expect(response.text).toBe("");
 

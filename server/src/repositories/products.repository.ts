@@ -1,6 +1,21 @@
 import { newProduct, Product } from "../interfaces/product.interface.js";
 
-const products: Product[] = [];
+const products: Product[] = [
+  {
+    id: 1,
+    name: "나이키",
+    stock: 10,
+    imageUrl: "https://picsum.photos/seed/laptop/160/160",
+    price: 300000,
+  },
+  {
+    id: 2,
+    name: "아디다스",
+    stock: 5,
+    imageUrl: "https://picsum.photos/seed/camera/160/160",
+    price: 250000,
+  },
+];
 
 export function isAlreadyExist(id: number) {
   return products.some((product) => product.id === id);
@@ -21,8 +36,12 @@ export function findAll() {
   return [...products];
 }
 
+export function findById(id: number) {
+  return products.find((product) => product.id === id) ?? null;
+}
+
 export function findStockById(id: number) {
-  const product = products.find((product) => product.id === id);
+  const product = findById(id);
   if (product) {
     return product.stock;
   }
