@@ -1,6 +1,13 @@
 import type { CartItemsResponseDto, ErrorResponseDto } from "./cart.api.dto";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
+const NETWORK_ERROR_CODE = "네트워크 에러가 발생했습니다." as const;
+
+export class NetworkError extends Error {
+  constructor() {
+    super(NETWORK_ERROR_CODE);
+  }
+}
 
 function createApiUrl(path: string) {
   if (API_BASE_URL === "") return path;
@@ -14,7 +21,7 @@ export async function getCartItems(): Promise<CartItemsResponseDto> {
   try {
     response = await fetch(createApiUrl("/cart"));
   } catch {
-    throw new Error("네트워크 에러가 발생했습니다.");
+    throw new NetworkError();
   }
 
   if (!response.ok) {
@@ -40,7 +47,7 @@ export async function updateCartItemQuantity(
       body: JSON.stringify({ quantity }),
     });
   } catch {
-    throw new Error("네트워크 에러가 발생했습니다.");
+    throw new NetworkError();
   }
 
   if (!response.ok) {
@@ -57,7 +64,7 @@ export async function deleteCartItem(id: number): Promise<void> {
       method: "DELETE",
     });
   } catch {
-    throw new Error("네트워크 에러가 발생했습니다.");
+    throw new NetworkError();
   }
 
   if (!response.ok) {

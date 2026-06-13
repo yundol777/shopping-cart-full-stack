@@ -8,13 +8,13 @@ import type { CartItemsResponseDto } from "../apis/cart.api.dto";
 import { delay } from "../utils/delay";
 import { isValidCartItemQuantity } from "../domains/cart/quantity";
 import type { UseCartDataReturn } from "./useCartData.types";
+import useMutation from "./useMutation";
 
 const useCartData = (): UseCartDataReturn => {
   const [data, setData] = useState<CartItemsResponseDto>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [mutationError, setMutationError] = useState<Error | null>(null);
-  const [mutationLoading, setMutationLoading] = useState(false);
+  const { mutate, mutationLoading, mutationError } = useMutation();
 
   const replaceQuantity = (id: number, quantity: number) => {
     setData((prevItems) =>
@@ -27,6 +27,11 @@ const useCartData = (): UseCartDataReturn => {
         };
       }),
     );
+  };
+
+  const refetchCartItems = async () => {
+    const cartItems = await getCartItems();
+    setData(cartItems);
   };
 
   const removeItem = (id: number) => {
@@ -52,43 +57,22 @@ const useCartData = (): UseCartDataReturn => {
     fetchCartItems();
   }, []);
 
-  useEffect(() => {
-    if (mutationError === null) return;
-
-    const timerId = setTimeout(() => {
-      setMutationError(null);
-    }, 2000);
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [mutationError]);
-
   const updateQuantity = async (id: number, quantity: number) => {
     if (!isValidCartItemQuantity(quantity)) return;
-    try {
-      setMutationError(null);
-      setMutationLoading(true);
-      await updateCartItemQuantity(id, quantity);
-      replaceQuantity(id, quantity);
-    } catch (error) {
-      if (error instanceof Error) setMutationError(error);
-    } finally {
-      setMutationLoading(false);
-    }
+
+    await mutate({
+      api: () => updateCartItemQuantity(id, quantity),
+      onSuccess: () => replaceQuantity(id, quantity),
+      onNetworkError: () => refetchCartItems(),
+    });
   };
 
   const deleteItem = async (id: number) => {
-    const prevCartItems = data;
-    try {
-      setMutationError(null);
-      removeItem(id);
-      await deleteCartItem(id);
-    } catch (error) {
-      setData(prevCartItems);
-      if (error instanceof Error) setMutationError(error);
-      throw error;
-    }
+    await mutate({
+      api: () => deleteCartItem(id),
+      onSuccess: () => removeItem(id),
+      onNetworkError: () => refetchCartItems(),
+    });
   };
 
   return {
