@@ -14,7 +14,11 @@
 }
 ```
 
-## 1. 주문 확인 페이지 진입 시 (주문 요약 계산)
+## 1. 주문 요약 계산
+
+> 주문 확인 페이지 첫 진입 시 호출되며, 사용자의 행동에 따라 금액이 확정되어야 할 때(쿠폰 적용 및 산간지역 토글 시), 재호출됩니다.
+
+> 변경의 이유는 다르더라도 결국 한 묶음의 주문 옵션으로 생각했기 때문에, 묶어서 하나의 API로 구현하였습니다.
 
 ```http
 POST /orders/summary
@@ -76,19 +80,17 @@ POST /orders/summary
 | `400 Bad Request` | `EXCEEDS_COUPON_LIMIT`  | 적용하려는 쿠폰이 최대 적용 개수(2장)를 초과한 경우         |
 | `400 Bad Request` | `COUPON_NOT_APPLICABLE` | 만료·사용 완료·적용 조건 미달 등 적용할 수 없는 쿠폰인 경우 |
 
-## 2. 쿠폰 적용하기 클릭 시 (쿠폰 목록 조회)
+## 2. 쿠폰 목록 조회
 
 ```http
-GET /coupons?selectedCartItemIds=10,12
+GET /coupons
 ```
-
-> GET 요청은 body를 가질 수 없으므로, 선택된 장바구니 상품 id는 query string으로 전달한다.
 
 ### Request
 
-| 이름                  | 위치  | 필수 여부 | 설명                                     |
-| --------------------- | ----- | --------- | ---------------------------------------- |
-| `selectedCartItemIds` | query | 필수      | 선택된 장바구니 상품 id 배열 (쉼표 구분) |
+```json
+요청 파라미터가 없습니다.
+```
 
 ### Response
 
@@ -112,7 +114,7 @@ GET /coupons?selectedCartItemIds=10,12
       "couponName": "30% 할인 쿠폰",
       "discountType": "정률",
       "isApplicable": true,
-      "discountAmount": 30000
+      "discountAmount": 30
     }
   ]
 }
@@ -133,45 +135,3 @@ GET /coupons?selectedCartItemIds=10,12
 | ----------------- | ----------------------- | -------------------------------------------------------- |
 | `400 Bad Request` | `INVALID_CART_ITEM_IDS` | `selectedCartItemIds`가 없거나 형식이 유효하지 않은 경우 |
 | `404 Not Found`   | `CART_ITEM_NOT_FOUND`   | 해당 `cartItemId`의 장바구니 상품이 존재하지 않는 경우   |
-
-## 3. 사용 쿠폰 유효기간 검증
-
-```http
-POST /coupons/validate
-```
-
-### Request
-
-```json
-{
-  "selectedCouponIds": ["1", "3"]
-}
-```
-
-| 이름                | 필수 여부 | 설명                           |
-| ------------------- | --------- | ------------------------------ |
-| `selectedCouponIds` | 필수      | 검증할 쿠폰 id 배열 (최대 2개) |
-
-### Response
-
-`204 No Content`
-
-모든 쿠폰이 유효하면 응답 본문 없이 성공을 반환한다.
-
-### Error
-
-`400 Bad Request` 또는 `404 Not Found`
-
-```json
-{
-  "code": "COUPON_EXPIRED",
-  "message": "유효기간이 지난 쿠폰입니다."
-}
-```
-
-| 상태 코드         | 에러 코드              | 설명                                                |
-| ----------------- | ---------------------- | --------------------------------------------------- |
-| `404 Not Found`   | `COUPON_NOT_FOUND`     | 해당 `couponId`의 쿠폰이 존재하지 않는 경우         |
-| `400 Bad Request` | `COUPON_EXPIRED`       | 쿠폰의 유효기간이 지난 경우                         |
-| `400 Bad Request` | `COUPON_ALREADY_USED`  | 이미 사용한 쿠폰인 경우                             |
-| `400 Bad Request` | `EXCEEDS_COUPON_LIMIT` | 검증하려는 쿠폰이 최대 적용 개수(2장)를 초과한 경우 |
