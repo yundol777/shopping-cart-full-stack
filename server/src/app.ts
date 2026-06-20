@@ -25,9 +25,9 @@ app.get("/cart", getCartItems);
 app.patch("/cart/:id", updateCartItemQuantity);
 app.delete("/cart/:id", deleteCartItem);
 
-app.get("/orders/summary", getOrderSummary);
+app.post("/orders/summary", getOrderSummary);
 
-app.get("/coupon", getCoupons);
+app.post("/coupon", getCoupons);
 
 app.use(errorHandler);
 
