@@ -7,14 +7,9 @@ export interface OrderSummaryRequestDto {
 }
 
 export interface OrderSummaryResponseDto {
+  orderItems: CartItem[];
   orderAmount: number;
   couponDiscountAmount: number;
   shippingFee: number;
   totalPaymentAmount: number;
 }
-
-export interface OrderItemsRequestDto {
-  selectedCartItemIds: number[];
-}
-
-export type OrderItemResponseDto = CartItem[];

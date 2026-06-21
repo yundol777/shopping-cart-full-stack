@@ -1,8 +1,6 @@
 import { NetworkError } from "./cart.api";
 import type { ErrorResponseDto } from "./cart.api.dto";
 import type {
-  OrderItemResponseDto,
-  OrderItemsRequestDto,
   OrderSummaryRequestDto,
   OrderSummaryResponseDto,
 } from "./order.api.dto";
@@ -16,31 +14,6 @@ export async function getOrderSummary(
 
   try {
     response = await fetch(`${API_BASE_URL}/orders/summary`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestDto),
-    });
-  } catch {
-    throw new NetworkError();
-  }
-
-  if (!response.ok) {
-    const error: ErrorResponseDto = await response.json();
-    throw new Error(error.message);
-  }
-
-  return response.json();
-}
-
-export async function getOrderItems(
-  requestDto: OrderItemsRequestDto,
-): Promise<OrderItemResponseDto> {
-  let response: Response;
-
-  try {
-    response = await fetch(`${API_BASE_URL}/orders/items`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

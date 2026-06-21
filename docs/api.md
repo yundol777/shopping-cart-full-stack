@@ -46,6 +46,17 @@ POST /orders/summary
 
 ```json
 {
+  "orderItems": [
+    {
+      "id": 10,
+      "productId": 1,
+      "quantity": 2,
+      "name": "나이키",
+      "stock": 10,
+      "imageUrl": "https://picsum.photos/seed/laptop/160/160",
+      "price": 300000
+    }
+  ],
   "orderAmount": 10000,
   "couponDiscountAmount": 5000,
   "shippingFee": 3000,
@@ -53,12 +64,13 @@ POST /orders/summary
 }
 ```
 
-| 이름                   | 설명           |
-| ---------------------- | -------------- |
-| `orderAmount`          | 주문 금액      |
-| `couponDiscountAmount` | 쿠폰 할인 금액 |
-| `shippingFee`          | 배송비         |
-| `totalPaymentAmount`   | 총 결제 금액   |
+| 이름                   | 설명                      |
+| ---------------------- | ------------------------- |
+| `orderItems`           | 선택된 장바구니 상품 목록 |
+| `orderAmount`          | 주문 금액                 |
+| `couponDiscountAmount` | 쿠폰 할인 금액            |
+| `shippingFee`          | 배송비                    |
+| `totalPaymentAmount`   | 총 결제 금액              |
 
 ### Error
 

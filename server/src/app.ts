@@ -4,7 +4,7 @@ import { getCartItems, updateCartItemQuantity, deleteCartItem } from "./controll
 import { getCoupons } from "./controllers/coupon.controller.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import cors from "cors";
-import { getOrderItems, getOrderSummary } from "./controllers/order.controller.js";
+import { getOrderSummary } from "./controllers/order.controller.js";
 
 const app = express();
 app.use(express.json());
@@ -26,7 +26,6 @@ app.patch("/cart/:id", updateCartItemQuantity);
 app.delete("/cart/:id", deleteCartItem);
 
 app.post("/orders/summary", getOrderSummary);
-app.post("/orders/items", getOrderItems);
 
 app.post("/coupon", getCoupons);
 

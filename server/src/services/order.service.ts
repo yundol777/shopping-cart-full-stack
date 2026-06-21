@@ -37,6 +37,7 @@ export async function fetchOrderSummary(
   const totalPaymentAmount = orderAmount + shippingFee - couponDiscountAmount;
 
   return {
+    orderItems: selectedItems,
     orderAmount,
     couponDiscountAmount,
     shippingFee,
