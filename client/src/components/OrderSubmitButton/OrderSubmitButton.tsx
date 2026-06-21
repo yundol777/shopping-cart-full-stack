@@ -15,7 +15,7 @@ const OrderSubmitButton = ({
   const navigate = useNavigate();
 
   const moveToCheckout = () => {
-    navigate("/checkout", {
+    navigate("/complete", {
       state: {
         itemCount,
         totalQuantity,
