@@ -1,6 +1,16 @@
 import { Request, Response } from "express";
-import { fetchOrderSummary } from "../services/order.service.js";
+import { fetchOrderItems, fetchOrderSummary } from "../services/order.service.js";
 import { COMMON_ERROR_RESPONSE, COUPON_ERROR_RESPONSE } from "../constants/error.js";
+
+export async function getOrderItems(request: Request, response: Response): Promise<void> {
+  const { selectedCartItemIds } = request.body;
+
+  if (!Array.isArray(selectedCartItemIds)) throw new Error(COMMON_ERROR_RESPONSE.INVALID_REQUEST_BODY.code);
+
+  const orderItems = await fetchOrderItems(selectedCartItemIds);
+  response.status(200).json(orderItems);
+}
+
 export async function getOrderSummary(request: Request, response: Response): Promise<void> {
   const { selectedCartItemIds, selectedCouponIds, isRemoteArea } = request.body;
 

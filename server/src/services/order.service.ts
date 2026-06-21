@@ -4,16 +4,23 @@ import { getShippingFee } from "../domain/shipping/shipping.price.js";
 import { getCartItems } from "./cart.service.js";
 import { createCouponResponses, getCouponsByIds } from "./coupon.service.js";
 
+export async function fetchOrderItems(selectedCartItemIds: number[]) {
+  const cartItems = await getCartItems();
+  const selectedItems = cartItems.filter((item) => selectedCartItemIds.includes(item.id));
+
+  if (selectedItems.length !== selectedCartItemIds.length)
+    throw new Error(CART_ERROR_RESPONSE.CART_ITEM_NOT_FOUND.code);
+
+  return selectedItems;
+}
+
 export async function fetchOrderSummary(
   selectedCartItemIds: number[],
   selectedCouponIds: number[],
   isRemoteArea: boolean,
 ) {
   // 선택된 상품, 주문 금액
-  const cartItems = await getCartItems();
-  const selectedItems = cartItems.filter((item) => selectedCartItemIds.includes(item.id));
-  if (selectedItems.length !== selectedCartItemIds.length)
-    throw new Error(CART_ERROR_RESPONSE.CART_ITEM_NOT_FOUND.code);
+  const selectedItems = await fetchOrderItems(selectedCartItemIds);
   const orderAmount = selectedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   // 선택된 쿠폰, 쿠폰 할인 금액
