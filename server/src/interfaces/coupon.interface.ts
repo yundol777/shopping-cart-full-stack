@@ -1,6 +1,7 @@
 interface BasedCoupon {
   id: number;
   name: string;
+  description: string[];
   expiredAt: Date;
   isUsed: boolean;
 }
@@ -32,6 +33,7 @@ export type CouponEntity = FixedCoupon | RateCoupon | BogoCoupon | FreeShippingC
 export interface CouponResponse {
   id: number;
   name: string;
+  description: string[];
   discountType: "FIXED" | "RATE" | "SHIPPING";
   isUsable: boolean;
   discountValue: number;

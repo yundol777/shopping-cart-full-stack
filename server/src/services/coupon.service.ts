@@ -64,6 +64,7 @@ export function createCouponResponses(
     return {
       id: coupon.id,
       name: coupon.name,
+      description: coupon.description,
       discountType: getDiscountType(coupon),
       isUsable: usable,
       discountValue: usable ? calculateCouponDiscountValue(coupon, selectedItems, isRemoteArea) : 0,
