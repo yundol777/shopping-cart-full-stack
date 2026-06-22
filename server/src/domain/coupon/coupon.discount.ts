@@ -1,5 +1,5 @@
-import { CartItemResponse } from "../../interfaces/cart.interface.js";
-import { CouponEntity, CouponResponse, FixedCoupon, RateCoupon } from "../../interfaces/coupon.interface.js";
+import type { CartItemResponse } from "../../interfaces/cart.interface.js";
+import type { CouponEntity, CouponResponse, FixedCoupon, RateCoupon } from "../../interfaces/coupon.interface.js";
 import { DEFAULT_SHIPPING_FEE, REMOTE_AREA_SHIPPING_FEE } from "../shipping/constants.js";
 
 export function getDiscountType(coupon: CouponEntity): "FIXED" | "RATE" | "SHIPPING" {
