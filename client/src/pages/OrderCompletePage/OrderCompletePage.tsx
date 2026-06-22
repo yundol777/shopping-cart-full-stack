@@ -8,6 +8,7 @@ import {
   PaymentSummary,
   Title,
 } from "./OrderCompletePage.styles";
+import BackToCartButton from "../../components/BackToCartButton/BackToCartButton";
 
 interface CheckoutLocationState {
   itemCount: number;
@@ -37,6 +38,7 @@ const OrderCompletePage = () => {
           </PaymentAmount>
         </PaymentSummary>
       </Content>
+      <BackToCartButton />
     </Container>
   );
 };

@@ -6,6 +6,7 @@ export interface CouponRequestDto {
 export interface CouponResponse {
   id: number;
   name: string;
+  description: string[];
   discountType: "FIXED" | "RATE" | "SHIPPING";
   isUsable: boolean;
   discountValue: number;
