@@ -1,19 +1,14 @@
-import Price from "../../commons/Price/Price";
-import SelectionCheckbox from "../../commons/SelectionCheckbox/SelectionCheckbox";
+import ProductItemLayout from "../../../commons/ProductItemLayout/ProductItemLayout";
+import SelectionCheckbox from "../../../commons/SelectionCheckbox/SelectionCheckbox";
+import type { UseCartDataReturn } from "../../../hooks/useCartData.types";
 import type {
   CartActions,
   CartItemModel,
-} from "../../hooks/useCartItems.types";
-import type { UseCartDataReturn } from "../../hooks/useCartData.types";
+} from "../../../hooks/useCartItems.types";
 import {
   Container,
   ControlButton,
   DeleteButton,
-  ItemBody,
-  ItemImage,
-  ItemInfo,
-  ItemName,
-  ItemPrice,
   QuantityControls,
   TopRow,
 } from "./CartItem.styles";
@@ -52,15 +47,11 @@ const CartItem = ({
           삭제
         </DeleteButton>
       </TopRow>
-      <ItemBody>
-        <ItemImage src={item.imageUrl} alt={item.name} />
-        <ItemInfo>
-          <div>
-            <ItemName>{item.name}</ItemName>
-            <ItemPrice>
-              <Price value={item.price} />
-            </ItemPrice>
-          </div>
+      <ProductItemLayout
+        image={item.imageUrl}
+        name={item.name}
+        price={item.price}
+        quantityContent={
           <QuantityControls>
             <ControlButton type="button" onClick={handleDecreaseClick}>
               -
@@ -70,8 +61,8 @@ const CartItem = ({
               +
             </ControlButton>
           </QuantityControls>
-        </ItemInfo>
-      </ItemBody>
+        }
+      />
     </Container>
   );
 };

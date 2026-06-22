@@ -125,6 +125,7 @@ POST /coupon
     {
       "id": 1,
       "name": "5,000원 할인 쿠폰",
+      "description": ["만료일: 2027년 11월 30일", "최소 주문 금액: 100,000원"],
       "discountType": "FIXED",
       "isUsable": true,
       "discountValue": 5000
@@ -132,6 +133,7 @@ POST /coupon
     {
       "id": 3,
       "name": "5만원 이상 구매 시 무료 배송 쿠폰",
+      "description": ["만료일: 2027년 11월 30일"],
       "discountType": "SHIPPING",
       "isUsable": true,
       "discountValue": 3000
@@ -146,6 +148,7 @@ POST /coupon
 | `totalPrice`      | 선택된 상품 기준 전체 주문 금액                              |
 | `id`              | 쿠폰 식별 id                                                 |
 | `name`            | 쿠폰 이름                                                    |
+| `description`     | 쿠폰 상세 정보 배열                                          |
 | `discountType`    | 할인 타입 (`FIXED` / `RATE` / `SHIPPING`)                    |
 | `isUsable`        | 현재 주문에서 쿠폰을 사용할 수 있는지 여부                   |
 | `discountValue`   | 정액 할인 금액, 할인율 또는 배송비 할인액 (사용 불가 시 `0`) |

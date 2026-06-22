@@ -1,7 +1,5 @@
-import useOrderSummary from "../../hooks/useOrderSummary";
-import type { CartItemModel } from "../../hooks/useCartItems.types";
-import OrderSubmitButton from "../OrderSubmitButton/OrderSubmitButton";
-import SummaryItem from "../SummaryItem/SummaryItem";
+import useOrderSummary from "../../../hooks/useOrderSummary";
+import type { CartItemModel } from "../../../hooks/useCartItems.types";
 import {
   Container,
   FreeShippingNotice,
@@ -9,6 +7,8 @@ import {
   PriceGroup,
   TotalSection,
 } from "./OrderSummary.styles";
+import CheckoutButton from "../CheckoutButton/CheckoutButton";
+import SummaryRow from "../../../commons/SummaryRow/SummaryRow";
 
 interface Props {
   items: CartItemModel[];
@@ -17,7 +17,6 @@ interface Props {
 const OrderSummary = ({ items }: Props) => {
   const {
     itemCount,
-    totalQuantity,
     totalPrice,
     shippingFee,
     totalAmount,
@@ -34,17 +33,13 @@ const OrderSummary = ({ items }: Props) => {
         </p>
       </FreeShippingNotice>
       <PriceGroup>
-        <SummaryItem label="주문 금액" price={totalPrice} />
-        <SummaryItem label="배송비" price={shippingFee} />
+        <SummaryRow label="주문 금액" value={totalPrice} />
+        <SummaryRow label="배송비" value={shippingFee} />
       </PriceGroup>
       <TotalSection>
-        <SummaryItem label="총 결제 금액" price={totalAmount} />
+        <SummaryRow label="총 결제 금액" value={totalAmount} />
       </TotalSection>
-      <OrderSubmitButton
-        itemCount={itemCount}
-        totalQuantity={totalQuantity}
-        totalAmount={totalAmount}
-      />
+      <CheckoutButton itemCount={itemCount} />
     </Container>
   );
 };

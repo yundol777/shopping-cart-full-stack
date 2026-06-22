@@ -1,11 +1,11 @@
-import SelectionCheckbox from "../../commons/SelectionCheckbox/SelectionCheckbox";
+import SelectionCheckbox from "../../../commons/SelectionCheckbox/SelectionCheckbox";
 import CartItem from "../CartItem/CartItem";
 import type {
   CartActions,
   CartItemModel,
-} from "../../hooks/useCartItems.types";
+} from "../../../hooks/useCartItems.types";
 import { Container, ItemList, SelectAll, Divider } from "./CartItems.styles";
-import type { UseCartDataReturn } from "../../hooks/useCartData.types";
+import type { UseCartDataReturn } from "../../../hooks/useCartData.types";
 
 interface Props {
   items: CartItemModel[];

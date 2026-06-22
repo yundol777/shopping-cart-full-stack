@@ -25,41 +25,6 @@ export const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
-export const ItemBody = styled.div`
-  display: grid;
-  grid-template-columns: 112px 1fr;
-  gap: 24px;
-  align-items: center;
-`;
-
-export const ItemImage = styled.img`
-  width: 112px;
-  height: 112px;
-  border-radius: 8px;
-  object-fit: cover;
-`;
-
-export const ItemInfo = styled.div`
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 28px;
-`;
-
-export const ItemName = styled.p`
-  margin: 0 0 6px;
-  overflow: hidden;
-  font-size: 17px;
-  font-weight: 800;
-  line-height: 1.35;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-export const ItemPrice = styled.div`
-  display: flex;
-`;
-
 export const QuantityControls = styled.div`
   display: flex;
   align-items: center;
