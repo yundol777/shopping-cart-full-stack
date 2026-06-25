@@ -2,7 +2,6 @@ import type { CouponResponseDto } from "../../../../apis/coupon.api.dto";
 import Row from "../../../../commons/layout/Row/Row";
 import SelectionCheckbox from "../../../../commons/SelectionCheckbox/SelectionCheckbox";
 import { useCouponSelection } from "../../../../hooks/useCouponSelection";
-import { saveSelectedCouponIds } from "../../../../storage/order.storage";
 import infoIcon from "../../../../assets/info-icon.png";
 import {
   CouponInfo,
@@ -19,14 +18,15 @@ interface Props {
 }
 
 const CouponModalContent = ({ data, onClose, refetch }: Props) => {
-  const { selectedCouponIds, totalDiscount, toggleCoupon } = useCouponSelection(
-    data.couponResponses,
-    data.totalPrice,
-    data.bestCombination,
-  );
+  const { selectedCouponIds, toggleCoupon, completeSelection, totalDiscount } =
+    useCouponSelection(
+      data.couponResponses,
+      data.totalPrice,
+      data.bestCombination,
+    );
 
   const handleComplete = async () => {
-    saveSelectedCouponIds(selectedCouponIds);
+    completeSelection();
     onClose();
     await refetch();
   };

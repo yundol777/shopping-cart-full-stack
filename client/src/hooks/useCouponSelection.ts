@@ -1,70 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { CouponResponse } from "../apis/coupon.api.dto";
-import { getSelectedCouponIds } from "../storage/order.storage";
-
-function calculateTotalCouponDiscount(
-  coupons: CouponResponse[],
-  totalPrice: number,
-) {
-  const sortedCoupons = [...coupons].sort((a, b) => {
-    if (a.discountType === "RATE") return 1;
-    if (b.discountType === "RATE") return -1;
-    return 0;
-  });
-
-  let calculatedDiscount = 0;
-  let totalAmount = totalPrice;
-
-  for (const coupon of sortedCoupons) {
-    if (coupon.discountType === "FIXED") {
-      const fixedDiscount = coupon.discountValue;
-      calculatedDiscount += fixedDiscount;
-      totalAmount -= fixedDiscount;
-    }
-
-    if (coupon.discountType === "SHIPPING") {
-      const shippingDiscount = coupon.discountValue;
-      calculatedDiscount += shippingDiscount;
-    }
-
-    if (coupon.discountType === "RATE") {
-      const rateDiscount = Math.floor(
-        totalAmount * (coupon.discountValue / 100),
-      );
-
-      calculatedDiscount += rateDiscount;
-      totalAmount -= rateDiscount;
-    }
-  }
-
-  return calculatedDiscount;
-}
+import { calculateTotalCouponDiscount } from "../domains/coupon/coupon";
+import {
+  getSelectedCouponIds,
+  saveSelectedCouponIds,
+} from "../storage/order.storage";
 
 export function useCouponSelection(
   coupons: CouponResponse[],
   totalPrice: number,
   bestCombination: number[],
 ) {
-  const [selectedCouponIds, setSelectedCouponIds] = useState<number[]>([]);
-
-  const initializedRef = useRef(false);
-
-  useEffect(() => {
-    if (initializedRef.current) return;
-
+  const [selectedCouponIds, setSelectedCouponIds] = useState(() => {
     const persisted = getSelectedCouponIds();
 
-    if (persisted && persisted.length > 0) {
-      setSelectedCouponIds(persisted);
-      initializedRef.current = true;
-      return;
-    }
-
-    if (bestCombination.length > 0) {
-      setSelectedCouponIds(bestCombination);
-      initializedRef.current = true;
-    }
-  }, [bestCombination]);
+    return persisted.length > 0 ? persisted : bestCombination;
+  });
 
   const toggleCoupon = (couponId: number, isUsable = true) => {
     if (!isUsable) return;
@@ -91,10 +42,14 @@ export function useCouponSelection(
     totalPrice,
   );
 
+  const completeSelection = () => {
+    saveSelectedCouponIds(selectedCouponIds);
+  };
+
   return {
     selectedCouponIds,
     toggleCoupon,
-    selectedCoupons,
+    completeSelection,
     totalDiscount,
   };
 }
