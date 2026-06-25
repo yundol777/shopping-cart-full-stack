@@ -20,6 +20,12 @@ const Checkout = ({ data, refetch }: Props) => {
     totalPaymentAmount,
   } = data;
 
+  const itemCount = orderItems.length;
+  const totalQuantity = orderItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0,
+  );
+
   return (
     <Column gap={32}>
       <OrderItems orderItems={orderItems} />
@@ -31,7 +37,11 @@ const Checkout = ({ data, refetch }: Props) => {
         couponDiscountAmount={couponDiscountAmount}
         totalPaymentAmount={totalPaymentAmount}
       />
-      <OrderButton orderItems={orderItems} totalAmount={totalPaymentAmount} />
+      <OrderButton
+        itemCount={itemCount}
+        totalQuantity={totalQuantity}
+        totalAmount={totalPaymentAmount}
+      />
     </Column>
   );
 };
