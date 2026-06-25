@@ -1,25 +1,17 @@
-import { useState } from "react";
 import SelectionCheckbox from "../../../commons/SelectionCheckbox/SelectionCheckbox";
-import {
-  getIsRemoteArea,
-  setIsRemoteArea as saveIsRemoteArea,
-} from "../../../storage/order.storage";
 import { Container, Title, RowContent, Label } from "./ShippingInfo.styles";
+import { useRemoteAreaSelection } from "../../../hooks/useRemoteArea";
 
 interface Props {
   refetch: () => void;
 }
 
 const ShippingInfo = ({ refetch }: Props) => {
-  const [isRemoteArea, setIsRemoteArea] = useState(() => getIsRemoteArea());
+  const { isRemoteArea, toggleRemoteArea } = useRemoteAreaSelection();
 
   const handleToggleChecked = () => {
-    setIsRemoteArea((prev) => {
-      const nextValue = !prev;
-      saveIsRemoteArea(nextValue);
-      refetch();
-      return nextValue;
-    });
+    toggleRemoteArea();
+    refetch();
   };
 
   return (
